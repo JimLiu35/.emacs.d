@@ -26,7 +26,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(key-chord evil-collection evil general ivy doom-themes helpful ivy-rich which-key rainbow-delimiters counsel use-package)))
+   '(org-bullets visual-fill-column neotree key-chord evil-collection evil general ivy doom-themes helpful ivy-rich which-key rainbow-delimiters counsel use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -120,11 +120,23 @@
   (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1)
-  ;; (define-key evil-insert-state-map (kbd "jj") 'evil-normal-state)
-  ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (define-key evil-normal-state-map (kbd "S") 'save-buffer)
+  (define-key evil-normal-state-map (kbd "Q") 'evil-quit)
+  (define-key evil-normal-state-map (kbd "SPC sv") 'evil-window-vsplit)
+  (define-key evil-normal-state-map (kbd "SPC sh") 'evil-window-split)
+  (define-key evil-normal-state-map (kbd "J")
+    (lambda nil (interactive) (evil-next-visual-line 5)))
+  (define-key evil-normal-state-map (kbd "K")
+  (lambda nil (interactive) (evil-previous-visual-line 5)))
+  (define-key evil-normal-state-map (kbd "SPC h") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "SPC l") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd "SPC j") 'evil-window-down)
+  (define-key evil-normal-state-map (kbd "SPC k") 'evil-window-up)
+  ;; (define-key evil-motion-state-map (kbd "RET") nil)
+  ;; (define-key evil-motion-state-map (kbd "TAB") nil)
 
   ;; Use visual line motions even outside of visual-line-mode buffers
-
+  
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
@@ -133,12 +145,53 @@
 
 (use-package key-chord)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-;;(key-chord-define evil-motion-state-map "J" "5j")
 (key-chord-mode 1)
 
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-translate-key nil 'evil-motion-state-map
-    "J" "5j")
   (evil-collection-init))
+
+(use-package neotree
+  :ensure t
+  :config
+    (evil-set-initial-state 'neotree-mode 'normal)
+    (evil-define-key 'normal neotree-mode-map
+      (kbd "o")   'neotree-enter
+      (kbd "c")   'neotree-create-node
+      (kbd "r")   'neotree-rename-node
+      (kbd "d")   'neotree-delete-node
+      ;; (kbd "j")   'neotree-next-node
+      ;; (kbd "k")   'neotree-previous-node
+      (kbd "g")   'neotree-refresh
+      (kbd "C")   'neotree-change-root
+      (kbd "I")   'neotree-hidden-file-toggle
+      (kbd "H")   'neotree-hidden-file-toggle
+      (kbd "q")   'neotree-hide
+      (kbd "l")   'neotree-enter
+      (kbd "s")   'neotree-enter-vertical-split
+      (kbd "i")   'neotree-enter-horizontal-split
+      )
+  )
+
+(define-key evil-normal-state-map (kbd "tt") 'neotree-toggle)
+
+;; (with-eval-after-load 'evil-maps
+  ;; (define-key evil-motion-state-map (kbd "SPC") nil)
+  ; (define-key evil-motion-state-map (kbd "RET") nil)
+  ; (define-key evil-motion-state-map (kbd "TAB") nil))
+
+;; Org Mode Configuration ------------------------------------------------------
+(use-package org
+  :hook (org-mode . efs/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾")
+  (setq org-want-todo-bindings t)
+  (evil-define-key 'normal org-mode-map (kbd "C-RET") 'org-return)
+  )
+
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
