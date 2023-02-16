@@ -187,7 +187,9 @@
   :config
   (setq org-ellipsis " ▾")
   (setq org-want-todo-bindings t)
-  (evil-define-key 'normal org-mode-map (kbd "C-RET") 'org-return)
+  (if (eq system-type 'darwin)
+      (evil-define-key 'normal org-mode-map (kbd "C-<return>") 'org-return)
+    (evil-define-key 'normal org-mode-map (kbd "C-RET") 'org-return))
   )
 
 (use-package org-bullets
