@@ -33,6 +33,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(set-face-attribute 'default nil :height 200)
+
+(custom-set-faces
+  '(org-level-1 ((t (:height 1.5 :weight bold))))
+  '(org-level-2 ((t (:height 1.2 :weight bold))))
+  '(org-level-3 ((t (:height 1.1 :weight bold))))
+  '(org-level-4 ((t (:height 1.0 :weight bold)))))
 
 (use-package ivy
   :diminish
@@ -187,8 +194,11 @@
   :config
   (setq org-ellipsis " ▾")
   (setq org-want-todo-bindings t)
+  (setq org-adapt-indentation t)
   (evil-define-key 'normal org-mode-map (kbd "C-RET") 'org-return)
   )
+
+(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (use-package org-bullets
   :after org
