@@ -190,12 +190,21 @@
 
 ;; Org Mode Configuration ------------------------------------------------------
 (use-package org
-  :hook (org-mode . efs/org-mode-setup)
+;;  :hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-done 'note)
+  (setq org-log-into-drawer t)
+  (setq org-agenda-files
+	'("~/Desktop/orgNotes/agenda.org"))
   (setq org-want-todo-bindings t)
   (setq org-adapt-indentation t)
   (evil-define-key 'normal org-mode-map (kbd "C-RET") 'org-return)
+  (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+      (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
   )
 
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
@@ -205,3 +214,11 @@
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        )
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
