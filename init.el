@@ -61,6 +61,8 @@
 
 ;; buffer switching
 (global-set-key (kbd "C-M-J") 'counsel-switch-buffer)
+(global-set-key (kbd "C-l") 'next-buffer)
+(global-set-key (kbd "C-h") 'previous-buffer)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
