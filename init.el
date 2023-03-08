@@ -26,20 +26,19 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(org-bullets visual-fill-column neotree key-chord evil-collection evil general ivy doom-themes helpful ivy-rich which-key rainbow-delimiters counsel use-package)))
+   '(evil-anzu evil-tabs org-bullets visual-fill-column key-chord evil-collection evil general ivy doom-themes helpful ivy-rich which-key rainbow-delimiters counsel use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-level-1 ((t (:height 1.2 :weight bold))))
+ '(org-level-2 ((t (:height 0.9 :weight bold))))
+ '(org-level-3 ((t (:height 0.8 :weight bold))))
+ '(org-level-4 ((t (:height 0.7 :weight bold)))))
 (set-face-attribute 'default nil :height 200)
 
-(custom-set-faces
-  '(org-level-1 ((t (:height 1.5 :weight bold))))
-  '(org-level-2 ((t (:height 1.2 :weight bold))))
-  '(org-level-3 ((t (:height 1.1 :weight bold))))
-  '(org-level-4 ((t (:height 1.0 :weight bold)))))
+
 
 (use-package ivy
   :diminish
@@ -62,7 +61,7 @@
 ;; buffer switching
 (global-set-key (kbd "C-M-J") 'counsel-switch-buffer)
 (global-set-key (kbd "C-l") 'next-buffer)
-(global-set-key (kbd "C-h") 'previous-buffer)
+;; (global-set-key (kbd "C-h") 'previous-buffer)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -129,6 +128,7 @@
   (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1)
+  (define-key evil-normal-state-map (kbd ";") 'evil-ex)
   (define-key evil-normal-state-map (kbd "S") 'save-buffer)
   (define-key evil-normal-state-map (kbd "Q") 'evil-quit)
   (define-key evil-normal-state-map (kbd "SPC sv") 'evil-window-vsplit)
@@ -161,29 +161,8 @@
   :config
   (evil-collection-init))
 
-(use-package neotree
-  :ensure t
-  :config
-    (evil-set-initial-state 'neotree-mode 'normal)
-    (evil-define-key 'normal neotree-mode-map
-      (kbd "o")   'neotree-enter
-      (kbd "c")   'neotree-create-node
-      (kbd "r")   'neotree-rename-node
-      (kbd "d")   'neotree-delete-node
-      ;; (kbd "j")   'neotree-next-node
-      ;; (kbd "k")   'neotree-previous-node
-      (kbd "g")   'neotree-refresh
-      (kbd "C")   'neotree-change-root
-      (kbd "I")   'neotree-hidden-file-toggle
-      (kbd "H")   'neotree-hidden-file-toggle
-      (kbd "q")   'neotree-hide
-      (kbd "l")   'neotree-enter
-      (kbd "s")   'neotree-enter-vertical-split
-      (kbd "i")   'neotree-enter-horizontal-split
-      )
-  )
-
-(define-key evil-normal-state-map (kbd "tt") 'neotree-toggle)
+(require 'evil-tabs)
+(global-evil-tabs-mode t)
 
 ;; (with-eval-after-load 'evil-maps
   ;; (define-key evil-motion-state-map (kbd "SPC") nil)
